@@ -1,5 +1,13 @@
 import subprocess, json, sys
 
+def get_role(role):
+    role_arn = 'arn:aws:iam::933594548532:role/DevOpsPHIntern'
+    role_name = 'AWSInternRole'
+    if role == 'prod':
+        role_arn = 'arn:aws:iam::170785246738:role/OrganizationAccountAccessRole'
+        role_name = 'AWSProd'
+    return role_arn, role_name
+
 def get_credentials(role_arn, role_name):
     return subprocess.check_output(["aws","sts","assume-role","--role-arn",role_arn,"--role-session-name",role_name])
 
@@ -19,9 +27,13 @@ def export_role(json_role):
 
 if __name__ == '__main__':
     input_stream = sys.argv
-    if input_stream[1] == 'test':
-        print('Testing Goods')
-    elif input_stream[1] == 'exit':
-        print('Exit')
+    role_arn, role_name = ''
+    if input_stream[1] == 'assume':
+        params = input_stream[2]
+        role_arn, role_name = get_role(params)
+    
+    creds = get_credentials(role_arn, role_name)
+    export_role(creds)
+
 
     

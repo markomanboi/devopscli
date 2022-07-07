@@ -1,9 +1,12 @@
-FROM python:3.8
+FROM alpine:latest
 
-ADD main.py .
- 
+# Install Python 
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
+RUN pip3 install pyinstaller
+
+# Install AWS CLI
 RUN pip3 install --no-cache-dir awscli
 
-RUN chmod +x main.py
-
-ENTRYPOINT ["python", "./main.py"]
