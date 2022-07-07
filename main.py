@@ -27,7 +27,6 @@ def export_role(json_role):
 
 if __name__ == '__main__':
     input_stream = sys.argv
-    role_arn, role_name = ''
     if input_stream[1] == 'assume':
         params = input_stream[2]
         role_arn, role_name = get_role(params)
