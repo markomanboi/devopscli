@@ -19,12 +19,12 @@ def get_role_keys(json_role):
     return access_key, secret_key, session_token
 
 def export_role(json_role):
-    print("Assuming Role...")
     access_key, secret_key, session_token = get_role_keys(json_role)
     subprocess.call(["aws","configure","set","aws_access_key_id",access_key])
     subprocess.call(["aws","configure","set","aws_secret_access_key",secret_key])
     subprocess.call(["aws","configure","set","aws_session_token",session_token])
-
+    print('Role Assumed')
+    
 if __name__ == '__main__':
     input_stream = sys.argv
     main_cmd = input_stream[1]
