@@ -27,12 +27,20 @@ def export_role(json_role):
 
 if __name__ == '__main__':
     input_stream = sys.argv
-    if input_stream[1] == 'assume':
+    main_cmd = input_stream[1]
+    if main_cmd == 'assume':
         params = input_stream[2]
         role_arn, role_name = get_role(params)
     
-    creds = get_credentials(role_arn, role_name)
-    export_role(creds)
+        creds = get_credentials(role_arn, role_name)
+        export_role(creds)
+    
+    elif main_cmd == 'version':
+        print('DevOpsCLI Version - 0.0.0')
+    
+    else:
+        print('That is not a valid command')
+
 
 
     
