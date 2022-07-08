@@ -25,6 +25,16 @@ def export_role(json_role):
     subprocess.call(["aws","configure","set","aws_secret_access_key",secret_key])
     subprocess.call(["aws","configure","set","aws_session_token",session_token])
     print('Role Assumed')
+
+def get_app_details():
+    app_details = {}
+    try:
+        with open('./app.json') as app_json:
+            app_details = json.load(app_json)
+    except FileNotFoundError:
+        print('Error: app.json not found in directory')
+        sys.exit()
+    return app_details
     
 if __name__ == '__main__':
     input_stream = sys.argv
@@ -41,10 +51,13 @@ if __name__ == '__main__':
         export_role(creds)
     
     elif main_cmd == 'version':
-        print('DevOpsCLI Version - 0.0.0')
-    
+        app_details = get_app_details()
+        app_name = app_details['app-name']
+        version = app_details['version']
+        print(f'{app_name}: {version}')
+
     else:
-        print('That is not a valid command')
+        print('Error: invalid command')
 
 
 

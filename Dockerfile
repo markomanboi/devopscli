@@ -23,9 +23,11 @@ RUN pip3 install --no-cache-dir awscli
 # Setup DevOpsCLI
 ADD main.py .
 RUN  pyinstaller main.py \
-    --distpath /usr/local/bin \
+    --distpath /usr/local/bin/devopscli \
     -n devopscli \
     --onefile
 
+ADD app.json /usr/local/bin/devopscli/dist
+
 # Change permission of /usr/local/bin
-RUN chmod -R u=rwX,go=rX /usr/local/bin
+RUN chmod -R u=rwX,go=rX /usr/local/bin/
