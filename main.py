@@ -6,7 +6,7 @@ def get_credentials(role_arn, role_name):
     try:
         creds = subprocess.check_output(["aws","sts","assume-role","--role-arn",role_arn,"--role-session-name",role_name])
     except subprocess.CalledProcessError:
-        print('Error: role input is invalid')
+        print('Error: role input is invalid or you are not permitted to assume this role')
         sys.exit()
     return creds
 
