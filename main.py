@@ -1,7 +1,4 @@
-from logging import error
 import subprocess, json, sys
-
-from jsonschema import ValidationError
 
 def get_credentials(role_arn, role_name):
     print('Retrieving Role Keys...')
