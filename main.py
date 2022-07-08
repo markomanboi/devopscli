@@ -1,13 +1,5 @@
 import subprocess, json, sys
 
-def get_role(role):
-    role_arn = 'arn:aws:iam::933594548532:role/DevOpsPHIntern'
-    role_name = 'AWSInternRole'
-    if role == 'prod':
-        role_arn = 'arn:aws:iam::170785246738:role/OrganizationAccountAccessRole'
-        role_name = 'AWSProd'
-    return role_arn, role_name
-
 def get_credentials(role_arn, role_name):
     return subprocess.check_output(["aws","sts","assume-role","--role-arn",role_arn,"--role-session-name",role_name])
 
@@ -29,8 +21,12 @@ if __name__ == '__main__':
     input_stream = sys.argv
     main_cmd = input_stream[1]
     if main_cmd == 'assume':
-        params = input_stream[2]
-        role_arn, role_name = get_role(params)
+        try:
+            role_arn = input_stream[2]
+            role_name = input_stream[3]
+        except IndexError:
+            print('Error: no role parameter provided')
+            sys.exit()
     
         creds = get_credentials(role_arn, role_name)
         export_role(creds)
