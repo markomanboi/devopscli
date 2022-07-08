@@ -1,8 +1,17 @@
+from logging import error
 import subprocess, json, sys
+
+from jsonschema import ValidationError
 
 def get_credentials(role_arn, role_name):
     print('Retrieving Role Keys...')
-    return subprocess.check_output(["aws","sts","assume-role","--role-arn",role_arn,"--role-session-name",role_name])
+    creds = ''
+    try:
+        creds = subprocess.check_output(["aws","sts","assume-role","--role-arn",role_arn,"--role-session-name",role_name])
+    except subprocess.CalledProcessError:
+        print('Error: role input is invalid')
+        sys.exit()
+    return creds
 
 def get_role_keys(json_role):
     creds = json.loads(json_role)
