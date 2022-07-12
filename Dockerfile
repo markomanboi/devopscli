@@ -7,24 +7,20 @@ RUN apk upgrade
 # Install cURL
 RUN apk add curl
 
-# Install Python 
-ENV PYTHONUNBUFFERED=1
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-RUN python3 -m ensurepip
-RUN pip3 install --no-cache --upgrade pip setuptools
+# Install Maven
+RUN apk add maven
 
-# Install pyinstaller and binutils
-RUN apk add binutils
-RUN pip3 install --no-cache pyinstaller
+# Install Jacoco and SonarQube
+RUN mvn dependency:get org.jacoco:jacoco-maven-plugin:${JACOCO_VERSION}
+RUN mvn dependency:get org.sonarsource.scanner.maven:sonar-maven-plugin:${SONAR_VERSION}
 
 # Install AWS CLI
-RUN pip3 install --no-cache-dir awscli
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    unzip awscliv2.zip \
+    ./aws/install
 
 # Setup DevOpsCLI
-ADD main.py .
-RUN  pyinstaller main.py \
-    -n devopscli \
-    --onefile
-RUN chmod +x ./dist/devopscli
-RUN mv ./dist/devopscli /usr/local/bin/
+ADD dist/devopscli .
+RUN chmod +x ./devopscli
+RUN mv ./devopscli /usr/local/bin/
 ADD devopscli_app.json /usr/local/bin/
