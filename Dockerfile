@@ -1,9 +1,5 @@
 FROM alpine:latest
 
-#Initialize alpine
-RUN apk update
-RUN apk upgrade
-
 # Install cURL
 RUN apk add curl
 
