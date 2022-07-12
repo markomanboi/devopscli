@@ -20,7 +20,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     ./aws/install
 
 # Setup DevOpsCLI
-ADD dist/devopscli .
+ADD ${BUILD_DESTINATION}dist/devopscli .
 RUN chmod +x ./devopscli
 RUN mv ./devopscli /usr/local/bin/
 ADD devopscli_app.json /usr/local/bin/
